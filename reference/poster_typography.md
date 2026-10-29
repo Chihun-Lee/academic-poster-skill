@@ -49,3 +49,20 @@
 - [zhoubolei/bolei_awesome_posters](https://github.com/zhoubolei/bolei_awesome_posters) — CVPR/NeurIPS 실물 포스터 + pptx
 - [NTU LibGuides Poster Text & Fonts](https://libguides.ntu.edu.sg/posterdesign/text-fonts), [UC Davis Poster Design Principles](https://urc.ucdavis.edu/sites/g/files/dgvnsk3561/files/inline-files/General%20Poster%20Design%20Principles%20-%20Handout.pdf)
 - [Higgsfield poster app](https://higgsfield.ai/apps/poster), [Higgsfield AI Design Generator](https://higgsfield.ai/ai-design-generator)
+
+## 5. v2 기본값 (2026-10-29) — 큰 글씨·적은 글
+
+v1(위 2절: 본문 18–20pt, ≤400~450단어)로 만든 ICML 포스터가 실물 기준 글이 많고 작다는 판단 → 시각 중심 스타일(DynamicD 계열)로 기본값을 옮김.
+
+| 요소 | v1 | **v2 (A1급, scale 1.0)** |
+|---|---|---|
+| 제목 | 48–54pt | **72pt** |
+| 섹션 헤더 | 30–32pt | **40pt** |
+| 핵심 주장(.hl) / 본문 | 18–20pt | **28 / 26pt** |
+| 캡션·표·링크 | 14–16pt | **22–24pt** (최소 20pt, QA가 검사) |
+| 큰 숫자 콜아웃 | 없음 | **60pt** (`.stats`) |
+| 단어 예산 | ≤ 400–450 | **≤ 250** (카드당 불릿 ≤3, 불릿당 ≤12단어·≤2줄) |
+| 정렬 | 양쪽 정렬 | 왼쪽 정렬 (큰 글씨+짧은 줄에서 양쪽 정렬은 띄어쓰기 구멍) |
+
+- 크기 환산: 본문 pt ≈ 보드 짧은 변(mm) / 23 → A0(841mm)는 scale ~1.4.
+- 넘치면 글씨를 줄이지 말고 **글을 자른다**. 세부(평가 프로토콜·로드맵·펀딩)는 QR 뒤로.

@@ -25,6 +25,7 @@ PROMPT_SUFFIX = (
     "\n\nMANDATORY RENDERING RULES:\n"
     "- SOLID PURE WHITE (#FFFFFF) background. NO checkerboard, NO transparency pattern, NO grey mosaic.\n"
     "- All text labels LARGE and BOLD (letter height roughly 4-5% of image height) so they stay readable when printed small.\n"
+    "- MINIMAL text: each label 1-3 words; no sentences or paragraphs inside the figure.\n"
     "- Leave the BOTTOM ~8% of the image as a completely EMPTY solid white margin band (no content there); a watermark may be placed in that band.\n"
     "- Correct English spelling on every label."
 )

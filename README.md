@@ -5,9 +5,19 @@ A [Claude Code](https://claude.com/claude-code) skill that takes a paper and pro
 [ethanweber/posterskill](https://github.com/ethanweber/posterskill) hardened on a real
 ICML 2026 workshop poster (91 × 61 cm portrait, built end-to-end with this pipeline).
 
-<p align="center"><img src="docs/example_poster.jpg" width="420" alt="Example poster built with this skill"></p>
+**v2 — big type, few words (default).** Body text is 26 pt on an A1-class board, the whole
+poster carries ≤ 250 words, and the QA script fails the build when text gets too small, too
+long or too many — so content is *cut*, never shrunk to fit. The dense v1 template
+(18–20 pt body, ~450 words) is kept at tag [`v1`](https://github.com/Chihun-Lee/academic-poster-skill/tree/v1).
+
+<p align="center"><img src="docs/example_poster.jpg" width="420" alt="Example poster built with this skill (v1, dense)"><br>
+<sub>The ICML poster above was built with v1 (dense). v2 targets roughly half the words at ~1.3× the type size.</sub></p>
 
 ## What you get
+
+- **Big-type defaults**: 4 type levels (title 72 / header 40 / body 26 / caption 22 pt at
+  scale 1.0), big-number `.stats` callouts, ≤ 3 short bullets per card. Scale with the
+  board: body pt ≈ short side mm / 23.
 
 - **Editable HTML poster** (React, no build step): drag dividers to resize cards, swap cards,
   scale fonts, then `Copy Config` to persist the layout.
@@ -16,8 +26,9 @@ ICML 2026 workshop poster (91 × 61 cm portrait, built end-to-end with this pipe
   and the *visible watermark* (reserve a bottom white band in the prompt, crop it off after).
   Works with an API key **or** prints paste-ready prompts if you'd rather generate manually.
 - **Automated QA loop**: a Playwright script measures per-card overflow (clipped content /
-  dead whitespace) and detects orphan lines (a lone "loop" hanging on its own line), so text
-  fits exactly — no eyeballing 50 rounds.
+  dead whitespace), orphan lines, the total word count (`--max-words 250`), text printed
+  below `--min-pt 20`, and bullets wrapping past 2 lines — then prints `VERDICT: CLEAN` or
+  what to fix.
 - **Exact-size PDF** via headless Chromium (`610 mm × 910 mm` or whatever your board wants).
 - **Single-file share export**: React, fonts and images inlined → one HTML file (~2 MB
   compressed or lossless HQ) that opens offline in any browser, so co-authors can adjust the
@@ -36,7 +47,7 @@ skill drives the whole flow (`SKILL.md` is the playbook; scripts do the heavy li
 ## Use the scripts directly (no Claude required)
 
 ```bash
-pip install playwright pillow numpy && playwright install chromium
+pip install playwright pillow numpy && playwright install chromium   # or just have Google Chrome installed
 
 # 1. copy template.html → index.html, edit the CUSTOMIZE blocks (colors, size, cards)
 
@@ -59,12 +70,14 @@ python scripts/build_standalone.py index.html poster_standalone.html
 | `SKILL.md` | The full playbook: phases, typography rules, figure prompts, QA loop, pitfalls table |
 | `template.html` | posterskill template + fixes: versioned/validated localStorage, editor-UI-free rendering, justify + `text-wrap:pretty` |
 | `scripts/gen_img.py` | Gemini figure generation (API or manual-prompt mode) + watermark band crop + white trim |
-| `scripts/inspect_render.py` | Playwright QA: overflow + orphan-line report, preview PNG, exact-mm PDF |
+| `scripts/inspect_render.py` | Playwright QA: overflow, orphans, word budget, min pt, bullet length; preview PNG, exact-mm PDF |
 | `scripts/build_standalone.py` | esbuild-precompiled single-file HTML export (compressed / lossless) |
 | `reference/poster_typography.md` | Font sizes & word counts measured from real conference posters |
 
 ## Notable fixes over the original posterskill
 
+- **Big type by default** — the original's body text (~12 pt at A1 landscape) is unreadable
+  from 2 m; v2 starts at 26 pt and enforces it in QA.
 - **localStorage poisoning guard** — the original saves layout under one global key; opening
   any older poster from the same browser could silently delete cards and break logo paths in
   a new one. The template now versions the key per poster (`POSTER_ID`) *and* validates saved
